@@ -27,7 +27,10 @@ export class Navigation extends Component{
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto">
                 <NavLink className="d-inline p-2 bg-dark text-white" to="/">
-                    <h1>CASHIER INTERFACE</h1>
+                    {this.props.Cashier && 
+                    <h1>CASHIER INTERFACE</h1>}
+                    {!this.props.Cashier && 
+                    <h1>CUSTOMER INTERFACE</h1>}
                 </NavLink>
                 </Nav>
                 </Navbar.Collapse>

@@ -6,6 +6,7 @@ import "react-table-6/react-table.css";
 import {Button,ButtonToolbar,ToggleButton,Alert } from 'react-bootstrap';
 import {AddInvModal} from './AddInvModal';
 import { getQueriesForElement } from "@testing-library/dom";
+import {Navigation} from '../Navigation/Navigation';
 let url='http://localhost:53535/api/';
 
 
@@ -48,6 +49,7 @@ getTotal()
         
     return (
       <div> 
+        <Navigation Cashier={false}/>
         <h1>Pay or Die</h1>
         <h1>${this.getTotal()}</h1>
       </div>

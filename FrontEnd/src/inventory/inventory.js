@@ -7,7 +7,7 @@ import {Button,ButtonToolbar,ToggleButton,Alert,Form,Col } from 'react-bootstrap
 import {AddInvModal} from './AddInvModal';
 import { getQueriesForElement } from "@testing-library/dom";
 import {Customer} from './Customer';
-
+import {Navigation} from '../Navigation/Navigation';
 
 let url='http://localhost:53535/api/';
 
@@ -230,6 +230,7 @@ deleteInv(ProductNumber)
     let addModalClose=()=>this.setState({addModalShow:false});
     return (
       <div> 
+        <Navigation Cashier={true}/>
         <br />
               <Segment inverted>
               <div className="d-flex justify-content-between">

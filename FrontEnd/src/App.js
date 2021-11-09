@@ -14,7 +14,6 @@ function App() {
   return (
     <BrowserRouter>
       <Container>
-    <Navigation/>
      <Switch>
        <Route path='/' component={Inventory} exact/>
        <Route path='/customer' component={Customer}/>
