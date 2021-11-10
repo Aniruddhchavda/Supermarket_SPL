@@ -46,7 +46,7 @@ export class AddInvModal extends Component{
         })
         .then(res=>res.json())
         .then((result)=>{
-            alert(result);
+            console.log(result);
         },
         (error)=>{
             alert('Failed');

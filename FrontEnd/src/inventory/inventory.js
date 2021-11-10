@@ -8,7 +8,7 @@ import {AddInvModal} from './AddInvModal';
 import { getQueriesForElement } from "@testing-library/dom";
 import {Customer} from './Customer';
 import {Navigation} from '../Navigation/Navigation';
-
+import {Scanner} from './Scanner';
 let url='http://localhost:53535/api/';
 
 
@@ -45,7 +45,7 @@ export class Inventory extends React.Component {
     })
     .then(res=>res.json())
     .then((result)=>{
-        alert(result);
+        console.log(result);
     },
     (error)=>{
         alert('Failed');
@@ -194,13 +194,11 @@ getSum()
 
 deleteInv(ProductNumber)
 {
-    if(window.confirm('Are you sure?')){
         fetch(url+'cart/'+ProductNumber,{
             method:'DELETE',
             header:{'Accept':'application/json',
         'Content-Type':'application/json'}
         })
-    }
 }
 
   handleChange = event => {
@@ -231,7 +229,8 @@ deleteInv(ProductNumber)
     return (
       <div> 
         <Navigation Cashier={true}/>
-        <br />
+        <Scanner></Scanner>
+
               <Segment inverted>
               <div className="d-flex justify-content-between">
               <ButtonToolbar>
@@ -291,6 +290,8 @@ deleteInv(ProductNumber)
                     </Form.Group>
                 </Form.Row>
         </Form>
+
+        
 
       </div>
 
