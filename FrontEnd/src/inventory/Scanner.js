@@ -30,6 +30,10 @@ let numberShorten = {
   '0070662404041' : '4041'
 };
 
+let scanItems = {
+  '004' : Math.floor(Math.random()*100)
+}
+
 export class Scanner extends React.Component {
 
   constructor(props){
@@ -43,6 +47,11 @@ export class Scanner extends React.Component {
         alert("Product Number Does not exist"); 
         return;
     }
+    if(scanItems[event])
+    {
+        Quantity = scanItems[event];
+    }
+
     fetch(url+'cart',{
         method:'POST',
         headers:{
@@ -68,7 +77,7 @@ export class Scanner extends React.Component {
 render(){
   let data = 0;
   return (
-
+<div>
       <BarcodeScannerComponent
         width={500}
         height={500}
@@ -81,6 +90,7 @@ render(){
         }}
         delay={2000}
       />
+      </div>
   );
 }
 }

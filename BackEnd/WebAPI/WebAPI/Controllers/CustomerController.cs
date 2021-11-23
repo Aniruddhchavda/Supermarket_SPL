@@ -49,11 +49,6 @@ namespace WebAPI.Controllers
         [HttpPut]
         public JsonResult Put(Customer inv)
         {
-            /*            string query = @"
-                                update dbo.CustomerTable set 
-                                Total = '" + inv.Total + @"',
-                                where CustomerID = '" + inv.CustomerID + @"' 
-                                ";*/
             string query = "update dbo.CustomerTable set Total='"+ inv.Total +"' where CustomerID = '1'";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
@@ -72,6 +67,29 @@ namespace WebAPI.Controllers
             }
 
             return new JsonResult("Total Updated");
+        }
+
+        [HttpDelete]
+        public JsonResult Delete()
+        {
+            string query = "delete from dbo.Cart";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult("Deleted Successfully");
         }
     }
 }

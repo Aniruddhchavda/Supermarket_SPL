@@ -11,7 +11,6 @@ import {Navigation} from '../Navigation/Navigation';
 import {Scanner} from './Scanner';
 let url='http://localhost:53535/api/';
 
-
 export class Inventory extends React.Component {
 
   constructor(props) {
@@ -26,12 +25,14 @@ export class Inventory extends React.Component {
       total:0
     };
     this.handleSubmit=this.handleSubmit.bind(this);
+    this.deleteAll=this.deleteAll.bind(this);
+    this.resetTotal=this.resetTotal.bind(this);
+    this.newOrder=this.newOrder.bind(this);
   }
 
 
-  handleSubmit(event){
+  handleSubmit(){
 
-    event.preventDefault();
     fetch(url+'customer',{
         method:'PUT',
         headers:{
@@ -39,8 +40,8 @@ export class Inventory extends React.Component {
             'Content-Type':'application/json'
         },
         body:JSON.stringify({
-          CustomerID : event.target.CustomerID.value,
-          Total: event.target.Total.value,
+          CustomerID : '1',
+          Total: this.getSum(),
         })
     })
     .then(res=>res.json())
@@ -50,6 +51,7 @@ export class Inventory extends React.Component {
     (error)=>{
         alert('Failed');
     })
+
 }
 
 
@@ -222,26 +224,65 @@ deleteInv(ProductNumber)
   };
 
 
+  deleteAll()
+{
+        fetch(url+'customer/',{
+            method:'DELETE',
+            header:{'Accept':'application/json',
+        'Content-Type':'application/json'}
+        })
+}
+
+resetTotal(){
+  fetch(url+'customer',{
+      method:'PUT',
+      headers:{
+          'Accept':'application/json',
+          'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        CustomerID : 1,
+        Total: 0,
+      })
+  })
+  .then(res=>res.json())
+  .then((result)=>{
+      console.log(result);
+  },
+  (error)=>{
+      alert('Failed');
+  })
+}
+
+newOrder()
+{
+  this.deleteAll();
+  this.resetTotal();
+}
+
   render() {
     let {originalData, data, columns, searchInput}=this.state;
     
     let addModalClose=()=>this.setState({addModalShow:false});
+    setTimeout(this.handleSubmit(), 100000);
     return (
       <div> 
         <Navigation Cashier={true}/>
-        <Scanner></Scanner>
 
-              <Segment inverted>
-              <div className="d-flex justify-content-between">
+         <Segment inverted>
+          <div className="d-flex justify-content-between">
               <ButtonToolbar>
                 <Button variant='outline-light' size='md'
                  onClick={()=>this.setState({addModalShow:true})}>
                  Add Manually</Button>
-                
 
                  <AddInvModal show={this.state.addModalShow}
                 onHide={addModalClose}/>
+
             </ButtonToolbar>
+
+      <Button variant='outline-light' size='md' onClick={this.newOrder}>Order Complete</Button>
+
             <Input
                 inverted placeholder='Search...'
                  name="searchInput"
@@ -250,7 +291,7 @@ deleteInv(ProductNumber)
                  size='small'
              />
 
-              </div>
+          </div>
              </Segment>
 
         <ReactTable
@@ -270,28 +311,7 @@ deleteInv(ProductNumber)
           ]}
           showPagination={false}
         />
-
-        <Form onSubmit={this.handleSubmit} >
-                <Form.Row>
-                    <Form.Group as={Col} controlId="Total">
-                        <Form.Control type="text" name="Total" required hidden
-                        placeholder={this.getSum()} value={this.getSum()} />
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="CustomerID">
-                        <Form.Control type="text" name="CustomerID" required hidden
-                        placeholder="1" value="1" />
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group>
-                        <Button variant="outline-primary" type="submit" size="lg">
-                            Submit
-                        </Button>
-                    </Form.Group>
-                </Form.Row>
-        </Form>
-
-        
+      <Scanner></Scanner>
 
       </div>
 

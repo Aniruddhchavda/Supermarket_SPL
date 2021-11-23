@@ -16,15 +16,35 @@ let itemsPrice = {
     '004' : "10"
 };
 
+
 export class AddInvModal extends Component{
     constructor(props){
         super(props);
         this.handleSubmit=this.handleSubmit.bind(this);
+        this.onValChange=this.onValChange.bind(this);
+        this.ScaleItem=this.ScaleItem.bind(this);
+        this.state = {
+            val : this.val
+        }
     }
 
-    
+    onValChange(value)
+    {
+        this.setState({
+            val : value
+        });
+    }
+
+    ScaleItem()
+    {
+            this.onValChange(Math.floor(Math.random()*100));
+    }
 
     handleSubmit(event){
+        this.setState({
+            val : '0'
+        });
+
         if(itemsName[event.target.ProductNumber.value] === undefined) 
         {
             alert("Product Number Does not exist"); 
@@ -80,15 +100,22 @@ centered
 
                 
                     <Form.Group as={Col} controlId="ProductQuantity">
-                        <Form.Label>Product Quantity</Form.Label>
+                        <Form.Label>
+                            "Product Quantity"
+                        </Form.Label>
                         <Form.Control type="text" name="ProductQuantity" required
-                        placeholder="ProductQuantity"/>
+                        placeholder="ProductQuantity" value={this.state.val} onChange={e => this.onValChange(e.target.value)}/>
                     </Form.Group>
                     </Form.Row>
                 <Form.Row>
                     <Form.Group>
                         <Button variant="primary" type="submit" onClick={this.props.onHide}>
                             Add
+                        </Button>
+                    </Form.Group>
+                    <Form.Group>
+                        <Button variant="secondary" onClick={this.ScaleItem}>
+                            Scale
                         </Button>
                     </Form.Group>
                 </Form.Row>
