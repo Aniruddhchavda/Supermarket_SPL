@@ -90,7 +90,7 @@ getTax()
   {
     sum += data[i]["ProductPrice"] * data[i]["ProductQuantity"];
   }
-  return sum*1.08-sum;
+  return Math.round((sum*1.08-sum) * 100) / 100;
 }
 
 getGrandSum()
@@ -102,7 +102,7 @@ getGrandSum()
   {
     sum += data[i]["ProductPrice"] * data[i]["ProductQuantity"];
   }
-  return sum*1.08;
+  return Math.round((sum*1.08) * 100) / 100;
 }
 
 
