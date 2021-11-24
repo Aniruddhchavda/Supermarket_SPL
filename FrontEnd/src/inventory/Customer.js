@@ -8,7 +8,9 @@ import {AddInvModal} from './AddInvModal';
 import { getQueriesForElement } from "@testing-library/dom";
 import {Navigation} from '../Navigation/Navigation';
 import { render } from 'react-dom';
-import Numberpad from 'react-numpad'
+import Numberpad from 'react-numpad';
+import { FaCheck } from '@react-icons/all-files/fa/FaCheck';
+import { FaTimes } from '@react-icons/all-files/fa/FaTimes';
 import Numpad from 'react-numberpad';
 import {Printer} from './printer';
 import TextLoop from "react-text-loop";
@@ -188,7 +190,10 @@ Authenticate()
         placeholder={'Enter Card Number'}
         value={this.state.cardValue || ""}
         decimal={2}
-        />
+        >
+        <br></br>
+        <input type='text'></input>
+        </Numberpad.Number>
         <br></br>
         <br></br>
         <Numberpad.Number
@@ -197,12 +202,15 @@ Authenticate()
         placeholder={'Enter PIN'}
         value={this.state.pinValue || ""}
         decimal={2}
-        />
+        >
+        <br></br>
+        <input type='text'></input>
+        </Numberpad.Number>
         </Segment>
 
         <ButtonToolbar className="justify-content-between">
-        <Button variant="success" onClick={this.Authenticate}>Assume this is a green tick mark</Button>
-        <Button variant="danger" onClick={this.resetAll}>Assume this is a red cross mark</Button>
+        <Button variant="success" onClick={this.Authenticate}>Submit <FaCheck/></Button>
+        <Button variant="danger" onClick={this.resetAll}>Cancel <FaTimes/></Button>
         </ButtonToolbar>
 
 
