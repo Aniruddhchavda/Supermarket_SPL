@@ -191,7 +191,7 @@ getSum()
   {
     sum += originalData[i]["ProductPrice"] * originalData[i]["ProductQuantity"];
   }
-  return sum;
+  return sum*1.08;
 }
 
 deleteInv(ProductNumber)
@@ -264,7 +264,7 @@ newOrder()
     let {originalData, data, columns, searchInput}=this.state;
     
     let addModalClose=()=>this.setState({addModalShow:false});
-    setTimeout(this.handleSubmit(), 100000);
+
     return (
       <div> 
         <Navigation Cashier={true}/>
@@ -281,6 +281,7 @@ newOrder()
 
             </ButtonToolbar>
 
+      <Button variant='outline-light' size='md' onClick={this.handleSubmit} disbaled={this.state.disabled}>Total</Button>
       <Button variant='outline-light' size='md' onClick={this.newOrder}>Order Complete</Button>
 
             <Input
@@ -311,6 +312,7 @@ newOrder()
           ]}
           showPagination={false}
         />
+
       <Scanner></Scanner>
 
       </div>

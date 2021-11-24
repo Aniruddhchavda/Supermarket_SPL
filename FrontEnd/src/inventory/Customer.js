@@ -11,6 +11,7 @@ import { render } from 'react-dom';
 import Numberpad from 'react-numpad'
 import Numpad from 'react-numberpad';
 import {Printer} from './printer';
+import TextLoop from "react-text-loop";
 let url='http://localhost:53535/api/';
 
 let auth = {
@@ -78,12 +79,53 @@ getSum()
   return sum;
 }
 
+getTax()
+{
+  let {data} = this.state;
+  if(data === undefined) return;
+  let sum = 0;
+  for(let i=0;i<data.length;i++)
+  {
+    sum += data[i]["ProductPrice"] * data[i]["ProductQuantity"];
+  }
+  return sum*1.08-sum;
+}
+
+getGrandSum()
+{
+  let {data} = this.state;
+  if(data === undefined) return;
+  let sum = 0;
+  for(let i=0;i<data.length;i++)
+  {
+    sum += data[i]["ProductPrice"] * data[i]["ProductQuantity"];
+  }
+  return sum*1.08;
+}
 
 
 resetAll()
 {
   this.handleCard(0);
   this.handlePIN(0);
+}
+
+getName()
+{
+  let {data} = this.state;
+  if(data == undefined) return "Good Morning !";
+  let last = data.length - 1;
+  if(data[last] === undefined) return "Good Morning !";
+  return "Last Scanned Item :" + data[last]["ProductName"];
+}
+
+getPrice()
+{
+  let {data} = this.state;
+  if(data == undefined) return "Good Morning !";
+  let last = data.length - 1;
+  if(data[last] === undefined) return "Good Morning !";
+  return "Last Scanned Item Price:" + data[last]["ProductPrice"];
 }
 
 Authenticate()
@@ -106,11 +148,36 @@ Authenticate()
         
     return (
       <div> 
-        <Navigation Cashier={false}/>        
+        <Navigation Cashier={false}/>   
+        <Alert align="center" variant="dark">  
+
+          <h2>
+                <TextLoop>
+                    <span>{this.getName()}</span>
+                    <span>{this.getPrice()}</span>
+                </TextLoop>
+          </h2>
+
+
+          </Alert>
+        <Segment >
+              <div className="d-flex justify-content-between">
+              <h2>Total: </h2>
+              <h2>${this.getSum()}</h2>
+              </div>
+        </Segment>
+
+        <Segment >
+              <div className="d-flex justify-content-between">
+              <h2>Tax : </h2>
+              <h2>${this.getTax()}</h2>
+              </div>
+        </Segment>
+
         <Segment inverted>
               <div className="d-flex justify-content-between">
               <h2>Grand Total: </h2>
-              <h2>${this.getSum()}</h2>
+              <h2>${this.getGrandSum()}</h2>
               </div>
         </Segment>
 
