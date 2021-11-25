@@ -1,4 +1,5 @@
 import React from "react";
+import renderIf from './renderIf';
 import { Input, Segment} from "semantic-ui-react";
 import 'semantic-ui-css/semantic.min.css';
 import ReactTable from "react-table-6";
@@ -11,6 +12,7 @@ import { render } from 'react-dom';
 import Numberpad from 'react-numpad';
 import { FaCheck } from '@react-icons/all-files/fa/FaCheck';
 import { FaTimes } from '@react-icons/all-files/fa/FaTimes';
+import { FaDollarSign } from '@react-icons/all-files/fa/FaDollarSign';
 import Numpad from 'react-numberpad';
 import {Printer} from './printer';
 import TextLoop from "react-text-loop";
@@ -22,6 +24,10 @@ let auth = {
 };
 
 let isApproved = false;
+
+// let paymentType = 'cash';
+// let paymentType = 'card';
+let paymentType = 'cheque';
 
 export class Customer extends React.Component {
 
@@ -183,7 +189,21 @@ Authenticate()
               </div>
         </Segment>
 
-        <Segment>
+        {renderIf(paymentType == 'cash')(
+        <Segment id='cash'>
+        <p>Please enter Total Cash Paid</p>
+        <ButtonToolbar className="justify-content-between">
+        <Button variant="info" onClick={this.Authenticate}><b>1$</b></Button>
+        <Button variant="info" onClick={this.Authenticate}><b>10$</b></Button>
+        <Button variant="info" onClick={this.Authenticate}><b>100$</b></Button>
+        <Button variant="info" onClick={this.Authenticate}><b>1000$</b></Button>
+        <Button variant="info" onClick={this.Authenticate}><b>10000$</b></Button>
+        </ButtonToolbar>
+        </Segment>
+        )}
+
+        {renderIf(paymentType == 'card')(
+        <Segment id='card'>
         <Numberpad.Number
         onChange={this.handleCard}
         label={'Card Number'}
@@ -206,7 +226,13 @@ Authenticate()
         <br></br>
         <input type='text'></input>
         </Numberpad.Number>
+        </Segment>          
+        )}
+        
+        {renderIf(paymentType == 'cheque')(
+        <Segment id='cheque'>
         </Segment>
+        )}
 
         <ButtonToolbar className="justify-content-between">
         <Button variant="success" onClick={this.Authenticate}>Submit <FaCheck/></Button>
