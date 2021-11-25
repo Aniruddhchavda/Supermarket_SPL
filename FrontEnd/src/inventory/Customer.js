@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import renderIf from './renderIf';
+import Expire from './Expire';
 import { Input, Segment} from "semantic-ui-react";
 import 'semantic-ui-css/semantic.min.css';
 import ReactTable from "react-table-6";
@@ -12,7 +13,8 @@ import { render } from 'react-dom';
 import Numberpad from 'react-numpad';
 import { FaCheck } from '@react-icons/all-files/fa/FaCheck';
 import { FaTimes } from '@react-icons/all-files/fa/FaTimes';
-import { FaDollarSign } from '@react-icons/all-files/fa/FaDollarSign';
+import { FaCheckSquare } from '@react-icons/all-files/fa/FaCheckSquare';
+import LoadingSpin from 'react-loading-spin';
 import Numpad from 'react-numberpad';
 import {Printer} from './printer';
 import TextLoop from "react-text-loop";
@@ -26,8 +28,11 @@ let auth = {
 let isApproved = false;
 
 // let paymentType = 'cash';
-// let paymentType = 'card';
-let paymentType = 'cheque';
+let paymentType = 'card';
+// let paymentType = 'cheque';
+
+let change = 0;
+let sumPaid = 0;
 
 export class Customer extends React.Component {
 
@@ -151,6 +156,17 @@ Authenticate()
   }
 }
 
+SumUp(bill)
+{
+  // change = this.getGrandSum() - bill;
+  // alert(sumPaid);
+  if(sumPaid <= this.getGrandSum()){
+    sumPaid = sumPaid + bill;
+  }
+  else
+  return sumPaid;
+}
+
   render() {
     let {originalData , data}=this.state;
         
@@ -192,17 +208,25 @@ Authenticate()
         {renderIf(paymentType == 'cash')(
         <Segment id='cash'>
         <p>Please enter Total Cash Paid</p>
+        <Segment>
         <ButtonToolbar className="justify-content-between">
-        <Button variant="info" onClick={this.Authenticate}><b>1$</b></Button>
-        <Button variant="info" onClick={this.Authenticate}><b>10$</b></Button>
-        <Button variant="info" onClick={this.Authenticate}><b>100$</b></Button>
-        <Button variant="info" onClick={this.Authenticate}><b>1000$</b></Button>
-        <Button variant="info" onClick={this.Authenticate}><b>10000$</b></Button>
+        <Button variant="info" onClick={this.SumUp(1)}><b>1$</b></Button>
+        <Button variant="info" onClick={this.SumUp(2)}><b>2$</b></Button>
+        <Button variant="info" onClick={this.SumUp(5)}><b>5$</b></Button>
+        <Button variant="info" onClick={this.SumUp(10)}><b>10$</b></Button>
+        <Button variant="info" onClick={this.SumUp(20)}><b>20$</b></Button>
+        <Button variant="info" onClick={this.SumUp(50)}><b>50$</b></Button>
+        <Button variant="info" onClick={this.SumUp(100)}><b>100$</b></Button>
         </ButtonToolbar>
+        </Segment>
+        <br></br>
+        <p>Amount Paid: <b>sumPaid</b></p>
+        <p>Amount Returnable: <b>change</b></p>
         </Segment>
         )}
 
         {renderIf(paymentType == 'card')(
+        <div>
         <Segment id='card'>
         <Numberpad.Number
         onChange={this.handleCard}
@@ -226,19 +250,40 @@ Authenticate()
         <br></br>
         <input type='text'></input>
         </Numberpad.Number>
-        </Segment>          
-        )}
+        </Segment>  
         
-        {renderIf(paymentType == 'cheque')(
-        <Segment id='cheque'>
-        </Segment>
-        )}
-
         <ButtonToolbar className="justify-content-between">
         <Button variant="success" onClick={this.Authenticate}>Submit <FaCheck/></Button>
         <Button variant="danger" onClick={this.resetAll}>Cancel <FaTimes/></Button>
         </ButtonToolbar>
 
+        </div>
+
+        )}
+        
+        {renderIf(paymentType == 'cheque')(
+        <Segment id='cheque'>
+          <Expire delay={5000}>
+          <div className='center-screen'>
+          <LoadingSpin/>
+          <br></br>
+          <h3><b>Scanning the cheque</b></h3>
+          </div>
+          </Expire>
+          <div className='center-screen' id="chequeScan" style={{display : 'none'}}>
+            <FaCheckSquare size={56}/>
+            <br></br>
+            <h3><b>Cheque Payment Successful</b></h3>
+          </div>
+          <script>
+            if (paymentType == 'cheque') {
+          function showdiv() {
+            setTimeout(() => {
+            document.getElementById("chequeScan").style.display = "flex";
+            }, 5400)}};
+          </script>
+        </Segment>
+        )}
 
         {isApproved &&
         <Printer
