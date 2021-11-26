@@ -25,11 +25,14 @@ let auth = {
   '2002' : '2345'
 };
 
-let isApproved = false;
+let isCardApproved = false;
 
+let paymentType = '';
 // let paymentType = 'cash';
-let paymentType = 'card';
+// let paymentType = 'card';
 // let paymentType = 'cheque';
+
+
 
 let change = 0;
 let sumPaid = 0;
@@ -40,9 +43,11 @@ export class Customer extends React.Component {
     super(props);
     this.state = {
       data: this.data,
+      data1:this.data1,
       total : '0',
       value: '0',
       cardValue: '',
+      chequeValue: '2342-234-23443',
       pinValue: ''
     };
     this.handleCard = this.handleCard.bind(this);
@@ -52,13 +57,31 @@ export class Customer extends React.Component {
   }
 
   refreshList(){
-    fetch(url+'cart')
-    .then(response=>response.json())
-    .then(data1=>{
+    Promise.all([
+      fetch(url+'cart'),
+      fetch(url+'payment')
+    ])
+    .then(([response1,response2]) => Promise.all([response1.json(),response2.json()]))
+    .then(([data1,data2]) =>
         this.setState({
-            data:data1});
-    });
-}
+            data:data1,
+            data1:data2
+          }));
+    let {data1} = this.state;
+    if(data1 != undefined) 
+    {
+      if(data1[0]['Total'] == 0) paymentType = ''; 
+      if(data1[0]['Total'] == 1) paymentType = 'cash'; 
+      if(data1[0]['Total'] == 2) 
+      {
+        paymentType = 'cheque'; 
+      }
+      if(data1[0]['Total'] == 3) {
+        paymentType = 'card'; 
+      }
+    }
+  }  
+
 
 componentDidMount() {
   this.refreshList();
@@ -147,8 +170,7 @@ Authenticate()
   if(auth[cardValue] && auth[cardValue] == pinValue)
   {
     alert("Approved");
-    isApproved = true;
-    this.resetAll();
+    isCardApproved = true;
   }
   else
   {
@@ -169,7 +191,7 @@ SumUp(bill)
 
   render() {
     let {originalData , data}=this.state;
-        
+
     return (
       <div> 
         <Navigation Cashier={false}/>   
@@ -275,20 +297,25 @@ SumUp(bill)
             <br></br>
             <h3><b>Cheque Payment Successful</b></h3>
           </div>
-          <script>
-            if (paymentType == 'cheque') {
-          function showdiv() {
+{paymentType=='cheque' &&
+
             setTimeout(() => {
+            if(document.getElementById("chequeScan") == undefined) return;
             document.getElementById("chequeScan").style.display = "flex";
-            }, 5400)}};
-          </script>
+            }, 5400)
+  
+  }
         </Segment>
         )}
 
-        {isApproved &&
+        {isCardApproved &&
         <Printer
         data={originalData || data}
         total={this.getSum()}
+        tax={this.getTax()}
+        gSum={this.getGrandSum()}
+        cardNo={this.state.cardValue}
+        chequeValue={this.state.chequeValue}
         >
         </Printer>
         }

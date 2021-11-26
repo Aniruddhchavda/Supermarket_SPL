@@ -9,6 +9,9 @@ import { getQueriesForElement } from "@testing-library/dom";
 import {Customer} from './Customer';
 import {Navigation} from '../Navigation/Navigation';
 import {Scanner} from './Scanner';
+import {Total} from './Total'
+
+
 let url='http://localhost:53535/api/';
 
 export class Inventory extends React.Component {
@@ -21,6 +24,7 @@ export class Inventory extends React.Component {
       searchInput: "",
       invs:[], 
       addModalShow:false,
+      totalModalShow:false,
       checkboxChecked: false,
       total:0
     };
@@ -166,7 +170,7 @@ export class Inventory extends React.Component {
           return (
         <div>
         <Button className="mr-2" variant="outline-danger"
-    onClick={()=>this.deleteInv(row.ProductNumber)}>
+    onClick={()=>this.deleteInv(row.CartID)}>
             Delete
         </Button>
         </div>
@@ -194,9 +198,9 @@ getSum()
   return sum*1.08;
 }
 
-deleteInv(ProductNumber)
+deleteInv(CartID)
 {
-        fetch(url+'cart/'+ProductNumber,{
+        fetch(url+'cart/'+CartID,{
             method:'DELETE',
             header:{'Accept':'application/json',
         'Content-Type':'application/json'}
@@ -264,6 +268,7 @@ newOrder()
     let {originalData, data, columns, searchInput}=this.state;
     
     let addModalClose=()=>this.setState({addModalShow:false});
+    let totalModalClose=()=>this.setState({totalModalShow:false});
 
     return (
       <div> 
@@ -280,8 +285,11 @@ newOrder()
                 onHide={addModalClose}/>
 
             </ButtonToolbar>
-
-      <Button variant='outline-light' size='md' onClick={this.handleSubmit} disbaled={this.state.disabled}>Total</Button>
+      <ButtonToolbar>
+        <Button variant='outline-light' size='md' onClick={()=>this.setState({totalModalShow:true})}>Total</Button>
+        <Total show={this.state.totalModalShow} onHide={totalModalClose}/>
+      </ButtonToolbar>
+      
       <Button variant='outline-light' size='md' onClick={this.newOrder}>Order Complete</Button>
 
             <Input

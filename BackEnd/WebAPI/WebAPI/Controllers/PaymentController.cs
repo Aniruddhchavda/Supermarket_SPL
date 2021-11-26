@@ -13,11 +13,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CartController : ControllerBase
+    public class PaymentController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public CartController(IConfiguration configuration)
+        public PaymentController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         public JsonResult Get()
         {
             string query = @"
-                    select CartID, ProductName, ProductNumber, ProductPrice, ProductQuantity from dbo.Cart";
+                    select Total from dbo.CustomerTable where CustomerID = 2";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             SqlDataReader myReader;
@@ -46,51 +46,10 @@ namespace WebAPI.Controllers
             return new JsonResult(table);
         }
 
-
-        [HttpPost]
-        public JsonResult Post(Cart inv)
-        {
-            string query = @"
-                                insert into dbo.Cart (ProductName, ProductNumber, ProductPrice, ProductQuantity)
-                                values 
-                                (
-                                '" + inv.ProductName + @"'
-                                ,'" + inv.ProductNumber + @"'
-                                ,'" + inv.ProductPrice + @"'
-                                ,'" + inv.ProductQuantity + @"'
-                                )
-                                ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader); ;
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult("Added");
-        }
-
-
         [HttpPut]
-        public JsonResult Put(Cart inv)
+        public JsonResult Put(Payment inv)
         {
-            string query = @"
-                    update dbo.Cart set 
-                    ProductName = '" + inv.ProductName + @"',
-                    ProductNumber = '" + inv.ProductNumber + @"',
-                    ProductPrice = '" + inv.ProductPrice + @"',
-                    ProductQuantity = '" + inv.ProductQuantity + @"',
-                    where CartID = " + inv.CartID + @" 
-                    ";
+            string query = "update dbo.CustomerTable set Total='"+ inv.Total +"' where CustomerID = '2'";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             SqlDataReader myReader;
@@ -107,17 +66,13 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return new JsonResult("Updated Successfully");
+            return new JsonResult("Total Updated");
         }
 
-
-        [HttpDelete("{CartID}")]
-        public JsonResult Delete(int CartID)
+        [HttpDelete]
+        public JsonResult Delete()
         {
-            string query = @"
-                    delete from dbo.Cart
-                    where CartID = " + CartID + @" 
-                    ";
+            string query = "delete from dbo.Cart";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             SqlDataReader myReader;

@@ -33,12 +33,27 @@ export class Printer extends React.Component {
       const values = this.props.data.map(elt=> [elt.CartID, elt.ProductName, elt.ProductNumber, elt.ProductPrice, elt.ProductQuantity]);
   
       let content = {
-        startY: 50,
+        startY: 120,
         head: headers,
         body: values
       };
       let totalTitle = "Total " + this.props.total; 
+      let tax ="Tax "+ this.props.tax;
+      let gSum = "Grand Total " + this.props.gSum;
+      let cardNo = "Card No : " + this.props.cardNo;
+      let chequeValue = "Cheque No  : " + this.props.chequeValue; 
+
       doc.text(totalTitle, marginLeft, 40);
+      doc.text(tax, marginLeft, 60);
+      doc.text(gSum, marginLeft, 80);
+      if(cardNo != '')
+      {
+      doc.text(cardNo, marginLeft, 100);
+      }
+      else if(chequeValue != '')
+      {
+        doc.text(chequeValue, marginLeft, 100);
+      }
       doc.autoTable(content);
       doc.save("report.pdf")
     }
