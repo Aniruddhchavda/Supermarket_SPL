@@ -188,7 +188,7 @@ Authenticate()
 
 SumUp(event)
 {
-  alert((event.target.innerText).slice(0,-1));
+  // alert((event.target.innerText).slice(0,-1));
   if(sumPaid <= this.grandSum){
     sumPaid = sumPaid + parseInt((event.target.innerText).slice(0,-1), 10);
   }
