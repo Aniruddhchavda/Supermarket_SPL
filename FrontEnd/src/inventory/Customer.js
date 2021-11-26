@@ -32,10 +32,13 @@ let paymentType = '';
 // let paymentType = 'card';
 // let paymentType = 'cheque';
 
-
+let chequeBool = false;
 
 let change = 0;
 let sumPaid = 0;
+let grandSum = 0;
+
+let paymentSuccess = false;
 
 export class Customer extends React.Component {
 
@@ -54,6 +57,7 @@ export class Customer extends React.Component {
     this.handlePIN = this.handlePIN.bind(this);
     this.Authenticate = this.Authenticate.bind(this);
     this.resetAll = this.resetAll.bind(this);
+    this.SumUp = this.SumUp.bind(this);
   }
 
   refreshList(){
@@ -85,10 +89,12 @@ export class Customer extends React.Component {
 
 componentDidMount() {
   this.refreshList();
+  if(paymentType == 'cheque') chequeBool = true;
 }
 
 componentDidUpdate(){
   this.refreshList();
+  if(paymentType == 'cheque') chequeBool = true;
 }
 
 handleCard(event) {
@@ -136,6 +142,7 @@ getGrandSum()
   {
     sum += data[i]["ProductPrice"] * data[i]["ProductQuantity"];
   }
+  this.grandSum = Math.round((sum*1.08) * 100) / 100;
   return Math.round((sum*1.08) * 100) / 100;
 }
 
@@ -171,6 +178,7 @@ Authenticate()
   {
     alert("Approved");
     isCardApproved = true;
+    paymentSuccess = true;
   }
   else
   {
@@ -178,15 +186,23 @@ Authenticate()
   }
 }
 
-SumUp(bill)
+SumUp(event)
 {
-  // change = this.getGrandSum() - bill;
-  // alert(sumPaid);
-  if(sumPaid <= this.getGrandSum()){
-    sumPaid = sumPaid + bill;
+  alert((event.target.innerText).slice(0,-1));
+  if(sumPaid <= this.grandSum){
+    sumPaid = sumPaid + parseInt((event.target.innerText).slice(0,-1), 10);
   }
-  else
-  return sumPaid;
+  else {
+    alert('Enough amount paid');
+    // alert('grandsum');
+    // alert(this.grandSum);
+    // alert('sumPaid');
+    // alert(sumPaid);
+    // alert('change');
+    // alert(sumPaid-this.grandSum);
+    change = sumPaid - this.grandSum;
+    paymentSuccess = true;
+  }
 }
 
   render() {
@@ -230,20 +246,20 @@ SumUp(bill)
         {renderIf(paymentType == 'cash')(
         <Segment id='cash'>
         <p>Please enter Total Cash Paid</p>
-        <Segment>
+        <Segment id='cashButtons'>
         <ButtonToolbar className="justify-content-between">
-        <Button variant="info" onClick={this.SumUp(1)}><b>1$</b></Button>
-        <Button variant="info" onClick={this.SumUp(2)}><b>2$</b></Button>
-        <Button variant="info" onClick={this.SumUp(5)}><b>5$</b></Button>
-        <Button variant="info" onClick={this.SumUp(10)}><b>10$</b></Button>
-        <Button variant="info" onClick={this.SumUp(20)}><b>20$</b></Button>
-        <Button variant="info" onClick={this.SumUp(50)}><b>50$</b></Button>
-        <Button variant="info" onClick={this.SumUp(100)}><b>100$</b></Button>
+        <Button variant="info" onClick={this.SumUp}><b>1$</b></Button>
+        <Button variant="info" onClick={this.SumUp}><b>2$</b></Button>
+        <Button variant="info" onClick={this.SumUp}><b>5$</b></Button>
+        <Button variant="info" onClick={this.SumUp}><b>10$</b></Button>
+        <Button variant="info" onClick={this.SumUp}><b>20$</b></Button>
+        <Button variant="info" onClick={this.SumUp}><b>50$</b></Button>
+        <Button variant="info" onClick={this.SumUp}><b>100$</b></Button>
         </ButtonToolbar>
         </Segment>
         <br></br>
-        <p>Amount Paid: <b>sumPaid</b></p>
-        <p>Amount Returnable: <b>change</b></p>
+        <p>Amount Paid: <b>${sumPaid}</b></p>
+        <p>Amount Returnable: <b>${change}</b></p>
         </Segment>
         )}
 
@@ -302,6 +318,7 @@ SumUp(bill)
             setTimeout(() => {
             if(document.getElementById("chequeScan") == undefined) return;
             document.getElementById("chequeScan").style.display = "flex";
+            paymentSuccess = true;
             }, 5400)
   
   }
