@@ -179,6 +179,7 @@ Authenticate()
     alert("Approved");
     isCardApproved = true;
     paymentSuccess = true;
+    this.handleSubmit();
   }
   else
   {
@@ -192,7 +193,7 @@ SumUp(event)
   if(sumPaid <= this.grandSum){
     sumPaid = sumPaid + parseInt((event.target.innerText).slice(0,-1), 10);
   }
-  else {
+  if(sumPaid >= this.grandSum){
     alert('Enough amount paid');
     // alert('grandsum');
     // alert(this.grandSum);
@@ -202,7 +203,32 @@ SumUp(event)
     // alert(sumPaid-this.grandSum);
     change = sumPaid - this.grandSum;
     paymentSuccess = true;
+    this.handleSubmit();
   }
+}
+
+handleSubmit(){
+  let ps = 0;
+  if(paymentSuccess) ps = 1;
+
+  fetch(url+'success',{
+      method:'PUT',
+      headers:{
+          'Accept':'application/json',
+          'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        CustomerID : '3',
+        Total: ps,
+      })
+  })
+  .then(res=>res.json())
+  .then((result)=>{
+      console.log(result);
+  },
+  (error)=>{
+      alert('Failed');
+  })
 }
 
   render() {
@@ -319,13 +345,14 @@ SumUp(event)
             if(document.getElementById("chequeScan") == undefined) return;
             document.getElementById("chequeScan").style.display = "flex";
             paymentSuccess = true;
+            this.handleSubmit();
             }, 5400)
   
   }
         </Segment>
         )}
 
-        {isCardApproved &&
+        {paymentSuccess &&
         <Printer
         data={originalData || data}
         total={this.getSum()}

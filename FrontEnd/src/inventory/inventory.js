@@ -20,13 +20,15 @@ export class Inventory extends React.Component {
     super(props);
     this.state = {
       data: this.originalData,
+      isSuccessData:this.isSuccessData,
       columns: [],
       searchInput: "",
       invs:[], 
       addModalShow:false,
       totalModalShow:false,
       checkboxChecked: false,
-      total:0
+      total:0,
+      isSuccess:0
     };
     this.handleSubmit=this.handleSubmit.bind(this);
     this.deleteAll=this.deleteAll.bind(this);
@@ -67,12 +69,20 @@ export class Inventory extends React.Component {
 
 
     refreshList(){
-        fetch(url+'cart')
-        .then(response=>response.json())
-        .then(data1=>{
+        Promise.all([
+          fetch(url+'cart'),
+          fetch(url+'success')
+        ])
+        .then(([response1,response2]) => Promise.all([response1.json(),response2.json()]))
+        .then(([data1,data2]) =>
             this.setState({
-                originalData:data1});
-        });
+              originalData:data1,
+                isSuccessData:data2
+              }));
+      if(this.state.isSuccessData != undefined)
+      {
+          this.state.isSuccess = this.state.isSuccessData[0]['Total'];
+      }
     }
 
 
@@ -265,7 +275,7 @@ newOrder()
 }
 
   render() {
-    let {originalData, data, columns, searchInput}=this.state;
+    let {originalData, data, columns, searchInput,isSuccess}=this.state;
     
     let addModalClose=()=>this.setState({addModalShow:false});
     let totalModalClose=()=>this.setState({totalModalShow:false});
@@ -287,7 +297,7 @@ newOrder()
             </ButtonToolbar>
       <ButtonToolbar>
         <Button variant='outline-light' size='md' onClick={()=>this.setState({totalModalShow:true})}>Total</Button>
-        <Total show={this.state.totalModalShow} onHide={totalModalClose}/>
+        <Total show={this.state.totalModalShow} onHide={totalModalClose} isSuccesss={isSuccess}/>
       </ButtonToolbar>
       
       <Button variant='outline-light' size='md' onClick={this.newOrder}>Order Complete</Button>

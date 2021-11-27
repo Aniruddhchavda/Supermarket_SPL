@@ -23,14 +23,14 @@ export class Printer extends React.Component {
       doc.setFontSize(15);
   
       const title = "Receipt";
-      const headers = [["CartID", "ProductName","ProductNumber","ProductPrice","ProductQuantity"]];
+      const headers = [["ProductName","ProductNumber","ProductPrice","ProductQuantity"]];
   
       if(this.props.data == undefined) {
         console.log(this.props.data);
         return;
       }
 
-      const values = this.props.data.map(elt=> [elt.CartID, elt.ProductName, elt.ProductNumber, elt.ProductPrice, elt.ProductQuantity]);
+      const values = this.props.data.map(elt=> [elt.ProductName, elt.ProductNumber, elt.ProductPrice, elt.ProductQuantity]);
   
       let content = {
         startY: 120,
@@ -43,16 +43,13 @@ export class Printer extends React.Component {
       let cardNo = "Card No : " + this.props.cardNo;
       let chequeValue = "Cheque No  : " + this.props.chequeValue; 
 
+      doc.text(Date().toLocaleString(), marginLeft, 20);
       doc.text(totalTitle, marginLeft, 40);
       doc.text(tax, marginLeft, 60);
       doc.text(gSum, marginLeft, 80);
-      if(cardNo != '')
+      if(this.props.cardNo == '1001')
       {
       doc.text(cardNo, marginLeft, 100);
-      }
-      else if(chequeValue != '')
-      {
-        doc.text(chequeValue, marginLeft, 100);
       }
       doc.autoTable(content);
       doc.save("report.pdf")
@@ -60,7 +57,7 @@ export class Printer extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="d-grid gap-2">
         <Button variant="outline-primary" size="lg" onClick={() => this.exportPDF()}>Print Receipt</Button>
       </div> 
     );

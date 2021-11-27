@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
+import {Modal,Button, Row, Col, Form, Alert} from 'react-bootstrap';
 import logo1 from '../img/tillopen.png';
 import logo2 from '../img/tillclose.png';
 let url='http://localhost:53535/api/';
@@ -11,6 +11,8 @@ export class Total extends Component{
         super(props);
         this.handleSubmit=this.handleSubmit.bind(this);
     }
+
+
 
     changeImage()
     {
@@ -28,12 +30,14 @@ export class Total extends Component{
     if(event.target.innerText == 'Close') 
     {
         pt = 0;
+        this.plsHelp();
         this.props.onHide();
     }
     if(event.target.innerText == 'Cash') pt = 1;
     if(event.target.innerText == 'Check') pt = 2;
     if(event.target.innerText == 'Credit/Debit') pt = 3;
         event.preventDefault();
+        
         fetch(url+'payment',{
             method:'PUT',
             headers:{
@@ -51,7 +55,31 @@ export class Total extends Component{
         (error)=>{
             alert('Failed');
         })
+
     }
+
+    plsHelp()
+    {
+        fetch(url+'success',{
+            method:'PUT',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+              CustomerID : '3',
+              Total: '0',
+            })
+        })
+        .then(res=>res.json())
+        .then((result)=>{
+            console.log(result);
+        },
+        (error)=>{
+            alert('Failed');
+        })
+    }
+
     render(){
         return (
             <div className="container">
@@ -84,7 +112,8 @@ centered
             <br/>
             <br/>   
             <button><img src={image} alt="my image" onClick={this.changeImage} /></button>
-
+            {this.props.isSuccesss && <Alert variant="success">Payment Success</Alert>}
+            {!this.props.isSuccesss && <Alert variant="danger">Payment Pending</Alert>}
     </Modal.Body>
     
     <Modal.Footer>
