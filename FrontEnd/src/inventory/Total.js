@@ -112,8 +112,8 @@ centered
             <br/>
             <br/>   
             <button><img src={image} alt="my image" onClick={this.changeImage} /></button>
-            {this.props.isSuccesss && <Alert variant="success">Payment Success</Alert>}
-            {!this.props.isSuccesss && <Alert variant="danger">Payment Pending</Alert>}
+            {this.props.isSuccesss=='1' && <Alert variant="success">Payment Success</Alert>}
+            {!this.props.isSuccesss=='1' && <Alert variant="danger">Payment Pending</Alert>}
     </Modal.Body>
     
     <Modal.Footer>

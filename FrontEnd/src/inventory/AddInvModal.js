@@ -101,7 +101,7 @@ centered
                 
                     <Form.Group as={Col} controlId="ProductQuantity">
                         <Form.Label>
-                            "Product Quantity"
+                            Product Quantity
                         </Form.Label>
                         <Form.Control type="text" name="ProductQuantity" required
                         placeholder="ProductQuantity" value={this.state.val} onChange={e => this.onValChange(e.target.value)}/>

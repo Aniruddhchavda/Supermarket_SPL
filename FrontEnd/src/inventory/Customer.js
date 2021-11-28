@@ -352,7 +352,7 @@ handleSubmit(){
         </Segment>
         )}
 
-        {paymentSuccess &&
+        {paymentSuccess && paymentType &&
         <Printer
         data={originalData || data}
         total={this.getSum()}
