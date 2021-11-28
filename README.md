@@ -61,3 +61,19 @@ For the server(backend) we are using the MVC architecture i.e Model View Control
  - We have two seperate URls for Cashier and Customer Interface. Cashier Display would be running on Localhost:3000 and Customer Display would be running on Localhost:3000/customer
 
  For state management we are using database For instance : When cashier selects the payment tye , it should automatically get updated on customer display. This is achieved by maintaining a global variable in database which is accessible to every authorized component.
+
+ # Test Data
+ Products : 
+
+    Product ID  : '001'           | Product Name : "PS5"           | Product Price : "400"
+    Product ID  : '002'           | Product Name : "XBOX Series X" | Product Price : "500"
+    Product ID  : '003'           | Product Name : "RTX 3080"      | Product Price : "700"
+    Product ID  : '004'           | Product Name : "Mangoes"       | Product Price : "10"
+    Product ID  : '0070662404041' | Product Name : "Noodles"       | Product Price : "10"
+
+Card No & Pin :
+
+    Card no : '1001' | Pin no : '1234'
+    Card no : '2002' | Pin no : '2345'
+    Card no : '505'  | Pin no : '9876'
+

@@ -32,6 +32,7 @@ export class Total extends Component{
         pt = 0;
         this.plsHelp();
         this.props.onHide();
+        this.props.onClose();
     }
     if(event.target.innerText == 'Cash') pt = 1;
     if(event.target.innerText == 'Check') pt = 2;
@@ -55,7 +56,6 @@ export class Total extends Component{
         (error)=>{
             alert('Failed');
         })
-
     }
 
     plsHelp()

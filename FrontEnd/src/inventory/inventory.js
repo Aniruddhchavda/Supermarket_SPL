@@ -297,10 +297,8 @@ newOrder()
             </ButtonToolbar>
       <ButtonToolbar>
         <Button variant='outline-light' size='md' onClick={()=>this.setState({totalModalShow:true})}>Total</Button>
-        <Total show={this.state.totalModalShow} onHide={totalModalClose} isSuccesss={isSuccess}/>
+        <Total show={this.state.totalModalShow} onHide={totalModalClose} isSuccesss={isSuccess} onClose={this.newOrder}/>
       </ButtonToolbar>
-      
-      <Button variant='outline-light' size='md' onClick={this.newOrder}>Order Complete</Button>
 
             <Input
                 inverted placeholder='Search...'

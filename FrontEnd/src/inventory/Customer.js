@@ -22,7 +22,8 @@ let url='http://localhost:53535/api/';
 
 let auth = {
   '1001' : '1234',
-  '2002' : '2345'
+  '2002' : '2345',
+  '505' : '9876'
 };
 
 let isCardApproved = false;
