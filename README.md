@@ -3,10 +3,11 @@ Supermarket_SPL
 # How to setup the development environment and how to run the application
 
 -> Dependencies : 
+```
  - Front End :  Download NodeJs
  - Back End  :  Download Visual Studio 2019
  - Database  :  DownloadMicrosoft Sql Server and Microsoft Sql Server Management Studio 
-
+```
 Once the Dependencies are installed , it's time to setup each of them.
 
 Front End : From the command prompt open the project folder , navigate to Front End folder and type "npm install" , this will install all the required packages and that is it , our front end has been setup.
@@ -17,25 +18,27 @@ Database : For setting up the database , Create a database named SupermaketDB , 
 
 ////----------Start--------------/////
 
-CREATE TABLE Cart (
-    CartID INT IDENTITY (1, 1) NOT NULL,
-    ProductName varchar(50),
-    ProductNumber INT,
-    ProductPrice INT,
-    ProductQuantity INT,
-    PRIMARY KEY CLUSTERED (CartID ASC)
-);  
+Query :
+```
+ CREATE TABLE Cart (
+     CartID INT IDENTITY (1, 1) NOT NULL,
+     ProductName varchar(50),
+     ProductNumber INT,
+     ProductPrice INT,
+     ProductQuantity INT,
+     PRIMARY KEY CLUSTERED (CartID ASC)
+ );  
 
-CREATE TABLE CustomerTable (
-    CustomerID INT IDENTITY (1, 1) NOT NULL,
-    Total INT,
-    PRIMARY KEY CLUSTERED (CustomerID ASC)
-);
+ CREATE TABLE CustomerTable (
+     CustomerID INT IDENTITY (1, 1) NOT NULL,
+     Total INT,
+     PRIMARY KEY CLUSTERED (CustomerID ASC)
+ );
 
-Insert into CustomerTable (Total) Values (0);
-Insert into CustomerTable (Total) Values (0);
-Insert into CustomerTable (Total) Values (0);
-
+ Insert into CustomerTable (Total) Values (0);
+ Insert into CustomerTable (Total) Values (0);
+ Insert into CustomerTable (Total) Values (0);
+```
 /// -----------END--------------- //// 
 
 Congratulations, our development environment is setup , now let's see how to run the application. 
