@@ -45,14 +45,14 @@ Congratulations, our development environment is setup , now let's see how to run
 
 To run the back end , open the WebApi.sln in Visual Studio 2019 and click "WebApi" to start the back end. This will start the server and it will start listening for requests on port 53535.
 
-To run the front end , open the FrontEnd folder from command prompt and execute the command "npm start" , that will start the front endon port 3000.
+To run the front end , open the FrontEnd folder from command prompt and execute the command "npm start" , that will start the front end on port 3000.
 
-URL for cashier interface : localhost:3000
+URL for cashier interface : localhost:3000              
 URL for customer interface : localhost:3000/customer
 
 That's it , our aplication is now up and running.
 
-# Desciption of the Implementation
+# Description of the Implementation
 
 For the server(backend) we are using the MVC architecture i.e Model View Control. 
 
@@ -60,10 +60,10 @@ For the server(backend) we are using the MVC architecture i.e Model View Control
  - Controller will handle the requests based on the request type.Controller will be responsible to execute the queries in database.
  - We are not using the View functionality as we are usng component-based front end i.e React Javascript
 
- For the Client(frontend) we are using the component-based architecture , for that we are using React Javascript.
- - We have two seperate URls for Cashier and Customer Interface. Cashier Display would be running on Localhost:3000 and Customer Display would be running on Localhost:3000/customer
+ For the Client(frontend) we are using the component-based architecture , for which we are using React Javascript.
+ - We have two seperate URLs for Cashier and Customer Interface. Cashier Display would be running on localhost:3000 and Customer Display would be running on localhost:3000/customer
 
- For state management we are using database For instance : When cashier selects the payment tye , it should automatically get updated on customer display. This is achieved by maintaining a global variable in database which is accessible to every authorized component.
+ For state management we are using database - For instance : When cashier selects the payment tye , it should automatically get updated on customer display. This is achieved by maintaining a global variable in database which is accessible to every authorized component.
 
  # Test Data
  Products : 
